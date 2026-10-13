@@ -73,6 +73,8 @@
     .fact svg{width:16px;height:16px;color:var(--accent);margin-top:1px}
     .fact strong{color:var(--ink);font-weight:600}
     .deal{margin:10px 19px 0;border:1px dashed color-mix(in srgb,var(--hot) 52%,var(--line));background:color-mix(in srgb,var(--hot) 8%,var(--surface));padding:11px;border-radius:10px;font-size:11px;color:var(--muted)}.deal b{color:var(--hot)}
+    .trustpilot{margin:14px 19px 0;padding:11px 12px;border-radius:9px;background:var(--surface-2);border:1px solid var(--line);display:block;text-decoration:none}.trustpilot.direct:hover{border-color:var(--accent)}
+    .tp-main{display:flex;align-items:center;gap:8px;min-width:0}.tp-score{font:700 15px/1 "IBM Plex Mono",monospace;color:var(--ink);white-space:nowrap}.tp-star{color:#00b67a}.tp-label{color:var(--muted);font-size:11px;min-width:0}.tp-source{margin-left:auto;color:var(--accent);font-size:10px;font-weight:700;white-space:nowrap}.tp-note{display:block;color:var(--muted);font-size:9px;line-height:1.4;margin-top:6px}.trustpilot.indirect .tp-score{color:var(--hot)}.trustpilot.missing .tp-score{font-size:12px;color:var(--muted)}
     .actions{padding:16px 19px 19px;display:grid;grid-template-columns:1fr auto;gap:9px}
     .primary,.secondary{height:43px;border-radius:10px;font-weight:700;text-decoration:none;display:grid;place-items:center;cursor:pointer}
     .primary{background:var(--ink);color:var(--bg);border:1px solid var(--ink)}
@@ -244,6 +246,7 @@
         <details><summary>Consistencia en evaluación vs. funded</summary><p>No es lo mismo pasar con una regla de consistencia que tenerla en cada retiro. El comparador separa ambas para que puedas identificar planes sin consistencia una vez fondeado.</p></details>
         <details><summary>Payout diario no siempre significa efectivo inmediato</summary><p>Algunas firmas exigen buffer, mínimo de retiro, días ganadores o imponen caps. La cadencia aparece junto al detalle completo y sus condiciones conocidas.</p></details>
         <details><summary>Cómo tratamos precios y códigos</summary><p>Mostramos el menor precio disponible en los tamaños publicados. BORI se identifica solo en Traders Launch y Phidias. Los demás códigos son promociones públicas de cada firma, no códigos de afiliado de Bori Prop Deals.</p></details>
+        <details><summary>Cómo verificamos las reseñas de Trustpilot</summary><p>Los perfiles directos enlazan a Trustpilot y muestran la nota y el volumen observados el 13 de octubre de 2026. Cuando el perfil directo no pudo confirmarse, mostramos la fuente externa, el rango discrepante o la ausencia de perfil en la propia ficha, sin presentarlo como verificación directa.</p></details>
       </div>
     </section>
     <div class="disclosure">Bori Prop Deals puede recibir compensación cuando usas un enlace o código afiliado. Eso no cambia los datos mostrados. “Verificado” significa contrastado con el sitio oficial; “índice” proviene de investigación especializada que cita documentación oficial; “por confirmar” indica que faltó verificación directa.</div>
@@ -270,6 +273,20 @@
       {id:'alpha',firm:'Alpha Futures',plan:'Advanced',sizes:['25K','50K','100K','150K'],prices:null,days:1,split:90,payout:'weekly',fundedConsistency:null,evalConsistency:'40%',drawdown:'EOD trailing',cap:'$15,000 por solicitud',payoutDetail:'Cada 5 días ganadores de $200+; hasta 4 retiros/mes; mínimo $500, máximo $15K.',code:null,affiliate:false,deal:null,priceNote:'Precio por confirmar.',url:'https://alphafutures.com',verification:'unverified'},
       {id:'elite',firm:'Elite Trader Funding',plan:'Evaluation',sizes:['50K','100K','150K'],prices:null,days:null,split:100,payout:'daily',fundedConsistency:'Por confirmar',evalConsistency:'Por confirmar',drawdown:'Por confirmar',cap:'$150,000 de profit simulado de por vida',payoutDetail:'Payouts aprobados diariamente; hasta 100% de $150K de profit simulado de por vida.',code:null,affiliate:false,deal:'Venta limitada de 85% OFF en evaluaciones no Fast Track, sin código; índice del 10 oct 2026.',priceNote:'Precio por confirmar.',url:'https://elitetraderfunding.com',verification:'unverified'}
     ];
+    const trustpilot = {
+      mff:{rating:4.9,count:22354,url:'https://www.trustpilot.com/review/myfundedfutures.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      lucid:{rating:4.4,count:6858,url:'https://www.trustpilot.com/review/lucidtrading.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      phidias:{rating:3.8,count:326,url:null,status:'indirect',note:'Referencia externa: selectpropfirms reportó 3.8/5; otras fuentes mostraron 3.9/257. El perfil directo no fue confirmado y Trustpilot podría haber retirado temporalmente la nota.'},
+      tl:{rating:null,count:null,url:null,status:'missing',note:'No se encontró un perfil de Trustpilot tras varias búsquedas · revisado 13 oct 2026.'},
+      tradeify:{rating:4.5,count:4501,url:null,status:'indirect',note:'Cifra aproximada de bestpropfirms.com; otras fuentes citan 4.4–4.8 y entre 2,100–7,394 reseñas. Perfil directo no confirmado.'},
+      topstep:{rating:3.7,count:14895,url:null,status:'indirect',note:'Cifra aproximada de tradingmaniaprop.com; otras fuentes recientes citan 3.6 y unas 14,500–14,900 reseñas. Perfil directo no confirmado.'},
+      apex:{rating:4.2,count:21306,url:'https://www.trustpilot.com/review/apextraderfunding.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      tpt:{rating:4.4,count:10880,url:'https://www.trustpilot.com/review/takeprofittrader.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      tradeday:{rating:4.6,count:1446,url:'https://www.trustpilot.com/review/tradeday.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      bulenox:{rating:4.7,count:1816,url:'https://www.trustpilot.com/review/bulenox.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      alpha:{rating:4.4,count:6145,url:'https://www.trustpilot.com/review/alpha-futures.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'},
+      elite:{rating:3.8,count:1157,url:'https://www.trustpilot.com/review/elitetraderfunding.com',status:'direct',note:'Perfil directo en Trustpilot · revisado 13 oct 2026.'}
+    };
     const els={results:document.getElementById('results'),search:document.getElementById('search'),speed:document.getElementById('speed'),payout:document.getElementById('payout'),split:document.getElementById('split'),price:document.getElementById('price'),sort:document.getElementById('sort'),count:document.getElementById('resultCount'),context:document.getElementById('contextText'),tray:document.getElementById('tray'),trayText:document.getElementById('trayText'),modal:document.getElementById('modal'),compareGrid:document.getElementById('compareGrid')};
     const selected=new Set(); let activeGoal='';
     const icons={shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.7-2.9 8.3-7 10-4.1-1.7-7-5.3-7-10V6l7-3z"/><path d="M9 12l2 2 4-5"/></svg>',trend:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 17l5-5 4 3 7-8"/><path d="M15 7h5v5"/></svg>',clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'};
@@ -277,6 +294,14 @@
     function minPrice(p){if(!p.prices)return null;const entries=Object.entries(p.prices).sort((a,b)=>a[1]-b[1]);return {size:entries[0][0],value:entries[0][1]}}
     function freq(v){return {daily:'Diario',weekly:'Semanal',biweekly:'Quincenal'}[v]||v}
     function verLabel(v){return v==='verified'?'Fuente oficial':v==='index'?'Índice experto':'Por confirmar'}
+    function reviewCount(n){return Number(n).toLocaleString('en-US')}
+    function trustpilotBlock(id){
+      const t=trustpilot[id];
+      const tag=t.url?'a':'div';
+      const attrs=t.url?` href="${t.url}" target="_blank" rel="noopener noreferrer" aria-label="Ver reseñas de Trustpilot"`:'';
+      const score=t.rating!==null?`<span class="tp-score"><span class="tp-star">★</span> ${t.rating}/5</span><span class="tp-label">${reviewCount(t.count)} reseñas${t.status==='direct'?' en Trustpilot':' · referencia externa'}</span>`:`<span class="tp-score">Trustpilot no localizado</span>`;
+      return `<${tag} class="trustpilot ${t.status}"${attrs}><span class="tp-main">${score}${t.url?'<span class="tp-source">Ver perfil ↗</span>':''}</span><span class="tp-note">${t.note}</span></${tag}>`;
+    }
     function filterPlans(){
       const q=els.search.value.trim().toLowerCase(), speed=els.speed.value, payout=els.payout.value, split=Number(els.split.value), maxPrice=els.price.value, sort=els.sort.value;
       return plans.filter(p=>{
@@ -306,6 +331,7 @@
         ${p.affiliate?`<div class="affiliate"><span>CÓDIGO AFILIADO</span><b>BORI</b></div>`:''}
         <div class="price-row"><div class="price"><small>${mp?'Desde · '+mp.size:'Precio'}</small><strong class="${mp?'':'na'}">${mp?money(mp.value):'En checkout'}</strong></div><div class="size">${p.sizes.join(' · ')}</div></div>
         <div class="metrics"><div class="metric"><b>${days}</b><span>Fondeo mín.</span></div><div class="metric"><b>${p.split}%</b><span>Profit split</span></div><div class="metric"><b>${freq(p.payout)}</b><span>Payout</span></div></div>
+        ${trustpilotBlock(p.id)}
         <div class="facts"><div class="fact">${icons.shield}<div><strong>Funded:</strong> ${p.fundedConsistency===null?'sin consistencia reportada':p.fundedConsistency}</div></div><div class="fact">${icons.trend}<div><strong>Drawdown:</strong> ${p.drawdown}</div></div><div class="fact">${icons.clock}<div><strong>Retiro:</strong> ${p.payoutDetail}</div></div></div>
         ${p.deal?`<div class="deal"><b>${p.code?`Código ${p.code}: `:''}</b>${p.deal}</div>`:''}
         <div class="actions"><a class="primary" href="${p.url}" target="_blank" rel="noopener noreferrer">Revisar fuente ↗</a><button class="secondary ${selectedNow?'selected':''}" data-compare="${p.id}" type="button">${selectedNow?'✓ Elegido':'Comparar'}</button></div>
@@ -333,7 +359,7 @@
     document.getElementById('resetBtn').addEventListener('click',()=>{activeGoal='';els.search.value='';els.speed.value='any';els.payout.value='any';els.split.value='0';els.price.value='any';els.sort.value='match';document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));render()});
     document.getElementById('openCompare').addEventListener('click',()=>{
       const list=[...selected].map(id=>plans.find(p=>p.id===id));
-      els.compareGrid.innerHTML=list.map(p=>{const mp=minPrice(p);return `<section class="compare-col"><h3>${p.firm}</h3><div class="sub">${p.plan}</div><div class="compare-list"><div class="compare-item"><span>Precio menor conocido</span><b>${mp?money(mp.value)+' · '+mp.size:'Por confirmar en checkout'}</b></div><div class="compare-item"><span>Fondeo mínimo</span><b>${p.days===null?'Por confirmar':p.days===0?'Mismo día':p.days+' días'}</b></div><div class="compare-item"><span>Profit split</span><b>${p.split}%</b></div><div class="compare-item"><span>Payout</span><b>${freq(p.payout)} · ${p.cap}</b></div><div class="compare-item"><span>Consistencia funded</span><b>${p.fundedConsistency===null?'Ninguna reportada':p.fundedConsistency}</b></div><div class="compare-item"><span>Drawdown</span><b>${p.drawdown}</b></div><div class="compare-item"><span>Precio / fees</span><b>${p.priceNote}</b></div>${p.code?`<div class="compare-item"><span>Código</span><b>${p.code}${p.affiliate?' · afiliado BORI':' · promo pública'}</b></div>`:''}</div><a class="primary" href="${p.url}" target="_blank" rel="noopener noreferrer">Ver fuente oficial</a></section>`}).join('');
+      els.compareGrid.innerHTML=list.map(p=>{const mp=minPrice(p);return `<section class="compare-col"><h3>${p.firm}</h3><div class="sub">${p.plan}</div><div class="compare-list"><div class="compare-item"><span>Precio menor conocido</span><b>${mp?money(mp.value)+' · '+mp.size:'Por confirmar en checkout'}</b></div><div class="compare-item"><span>Fondeo mínimo</span><b>${p.days===null?'Por confirmar':p.days===0?'Mismo día':p.days+' días'}</b></div><div class="compare-item"><span>Profit split</span><b>${p.split}%</b></div><div class="compare-item"><span>Trustpilot</span><b>${trustpilot[p.id].rating!==null?trustpilot[p.id].rating+'/5 · '+reviewCount(trustpilot[p.id].count)+' reseñas': 'Perfil no localizado'}</b><small class="tp-note">${trustpilot[p.id].note}</small></div><div class="compare-item"><span>Payout</span><b>${freq(p.payout)} · ${p.cap}</b></div><div class="compare-item"><span>Consistencia funded</span><b>${p.fundedConsistency===null?'Ninguna reportada':p.fundedConsistency}</b></div><div class="compare-item"><span>Drawdown</span><b>${p.drawdown}</b></div><div class="compare-item"><span>Precio / fees</span><b>${p.priceNote}</b></div>${p.code?`<div class="compare-item"><span>Código</span><b>${p.code}${p.affiliate?' · afiliado BORI':' · promo pública'}</b></div>`:''}</div><a class="primary" href="${p.url}" target="_blank" rel="noopener noreferrer">Ver fuente oficial</a></section>`}).join('');
       els.modal.classList.add('open');document.body.style.overflow='hidden';document.getElementById('closeModal').focus();
     });
     function closeModal(){els.modal.classList.remove('open');document.body.style.overflow=''}
